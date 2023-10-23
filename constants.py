@@ -1,0 +1,205 @@
+"""
+Config contains all the constants used in the Wave Function Collapse
+algorithm demonstrator.
+"""
+# Path to the spritesheet obtained from:
+#   https://merchant-shade.itch.io/16x16-puny-world
+SPRITE_SHEET_PATH = "./assets/punyworld-overworld-tileset.png"
+
+DARK_GREY = "darkgrey"
+GREY = "grey"
+GREEN = "green"
+WHITE = "white"
+
+# Directions
+NORTH = 0
+EAST = 1
+SOUTH = 2
+WEST = 3
+
+# Path to the spritesheet obtained from:
+#   https://merchant-shade.itch.io/16x16-puny-world
+SPRITE_SHEET_PATH = "./assets/punyworld-overworld-tileset.png"
+
+# worls size in tiles
+WORLD_X = 30
+WORLD_Y = 25
+
+# Spritesheet tile size (original), and upscale factor
+TILE_SIZE = 16
+TILE_SCALE = 2
+
+# Tile Types
+TILE_COAST_E = 4
+TILE_COAST_N = 3
+TILE_COAST_NE = 7
+TILE_COAST_NE_2 = 11
+TILE_COAST_NW = 10
+TILE_COAST_NW_2 = 14
+TILE_COAST_S = 5
+TILE_COAST_SE = 8
+TILE_COAST_SE_2 = 12
+TILE_COAST_SW = 9
+TILE_COAST_SW_2 = 13
+TILE_COAST_W = 6
+TILE_FOREST = 2
+TILE_FOREST_E = 24
+TILE_FOREST_N = 23
+TILE_FOREST_NE = 27
+TILE_FOREST_NE_2 = 31
+TILE_FOREST_NW = 30
+TILE_FOREST_NW_2 = 34
+TILE_FOREST_S = 25
+TILE_FOREST_SE = 28
+TILE_FOREST_SE_2 = 32
+TILE_FOREST_SW = 29
+TILE_FOREST_SW_2 = 33
+TILE_FOREST_W = 26
+TILE_GRASS = 0
+TILE_ROCK_E = 16
+TILE_ROCK_N = 15
+TILE_ROCK_NE = 19
+TILE_ROCK_NW = 22
+TILE_ROCK_S = 17
+TILE_ROCK_SE = 20
+TILE_ROCK_SW = 21
+TILE_ROCK_W = 18
+TILE_WATER = 1
+
+
+# Tile Edges
+COAST_E = 4
+COAST_N = 3
+COAST_S = 5
+COAST_W = 6
+FOREST = 2
+FOREST_E = 8
+FOREST_N = 7
+FOREST_S = 9
+FOREST_W = 10
+GRASS = 0
+ROCK = 15
+ROCK_E = 12
+ROCK_N = 11
+ROCK_S = 13
+ROCK_W = 14
+WATER = 1
+
+# Dictionary of all tile types and their sprite coordinates
+# in the spritesheet.
+sprite_tiles = {
+    TILE_COAST_E: (144, 176),
+    TILE_COAST_N: (128, 160),
+    TILE_COAST_NE: (144, 160),
+    TILE_COAST_NE_2: (176, 160),
+    TILE_COAST_NW: (112, 160),
+    TILE_COAST_NW_2: (160, 160),
+    TILE_COAST_S: (128, 192),
+    TILE_COAST_SE: (144, 192),
+    TILE_COAST_SE_2: (176, 176),
+    TILE_COAST_SW: (112, 192),
+    TILE_COAST_SW_2: (160, 176),
+    TILE_COAST_W: (112, 176),
+    TILE_FOREST: (16, 128),
+    TILE_FOREST_E: (0, 128),
+    TILE_FOREST_N: (16, 144),
+    TILE_FOREST_NE: (0, 144),
+    TILE_FOREST_NE_2: (96, 128),
+    TILE_FOREST_NW: (32, 144),
+    TILE_FOREST_NW_2: (112, 128),
+    TILE_FOREST_S: (16, 112),
+    TILE_FOREST_SE: (0, 112),
+    TILE_FOREST_SE_2: (96, 112),
+    TILE_FOREST_SW: (32, 112),
+    TILE_FOREST_SW_2: (112, 112),
+    TILE_FOREST_W: (32, 128),
+    TILE_GRASS: (16, 0),
+    TILE_ROCK_E: (0, 80),
+    TILE_ROCK_N: (16, 96),
+    TILE_ROCK_NE: (0, 96),
+    TILE_ROCK_NW: (32, 96),
+    TILE_ROCK_S: (16, 64),
+    TILE_ROCK_SE: (0, 64),
+    TILE_ROCK_SW: (32, 64),
+    TILE_ROCK_W: (32, 80),
+    TILE_WATER: (128, 176),
+}
+
+# Dictionary of all tile types and tile edges that can be used
+# by adjacent tiles to generate the world.
+tile_rules = {
+    TILE_COAST_E: [COAST_E, GRASS, COAST_E, WATER],
+    TILE_COAST_N: [GRASS, COAST_N, WATER, COAST_N],
+    TILE_COAST_NE: [GRASS, GRASS, COAST_E, COAST_N],
+    TILE_COAST_NE_2: [COAST_E, COAST_N, WATER, WATER],
+    TILE_COAST_NW: [GRASS, COAST_N, COAST_W, GRASS],
+    TILE_COAST_NW_2: [COAST_W, WATER, WATER, COAST_N],
+    TILE_COAST_S: [WATER, COAST_S, GRASS, COAST_S],
+    TILE_COAST_SE: [COAST_E, GRASS, GRASS, COAST_S],
+    TILE_COAST_SE_2: [WATER, COAST_S, COAST_E, WATER],
+    TILE_COAST_SW: [COAST_W, COAST_S, GRASS, GRASS],
+    TILE_COAST_SW_2: [WATER, WATER, COAST_W, COAST_S],
+    TILE_COAST_W: [COAST_W, WATER, COAST_W, GRASS],
+    TILE_FOREST: [FOREST, FOREST, FOREST, FOREST],
+    TILE_FOREST_E: [FOREST_E, FOREST, FOREST_E, GRASS],
+    TILE_FOREST_N: [FOREST, FOREST_N, GRASS, FOREST_N],
+    TILE_FOREST_NE: [FOREST_E, FOREST_N, GRASS, GRASS],
+    TILE_FOREST_NE_2: [FOREST, FOREST, FOREST_E, FOREST_N],
+    TILE_FOREST_NW: [FOREST_W, GRASS, GRASS, FOREST_N],
+    TILE_FOREST_NW_2: [FOREST, FOREST_N, FOREST_W, FOREST],
+    TILE_FOREST_S: [GRASS, FOREST_S, FOREST, FOREST_S],
+    TILE_FOREST_SE: [GRASS, FOREST_S, FOREST_E, GRASS],
+    TILE_FOREST_SE_2: [FOREST_E, FOREST, FOREST, FOREST_S],
+    TILE_FOREST_SW: [GRASS, GRASS, FOREST_W, FOREST_S],
+    TILE_FOREST_SW_2: [FOREST_W, FOREST_S, FOREST, FOREST],
+    TILE_FOREST_W: [FOREST_W, GRASS, FOREST_W, FOREST],
+    TILE_GRASS: [GRASS, GRASS, GRASS, GRASS],
+    TILE_ROCK_E: [ROCK_E, ROCK, ROCK_E, GRASS],
+    TILE_ROCK_N: [ROCK, ROCK_N, GRASS, ROCK_N],
+    TILE_ROCK_NE: [ROCK_E, ROCK_N, GRASS, GRASS],
+    TILE_ROCK_NW: [ROCK_W, GRASS, GRASS, ROCK_N],
+    TILE_ROCK_S: [GRASS, ROCK_S, ROCK, ROCK_S],
+    TILE_ROCK_SE: [GRASS, ROCK_S, ROCK_E, GRASS],
+    TILE_ROCK_SW: [GRASS, GRASS, ROCK_W, ROCK_S],
+    TILE_ROCK_W: [ROCK_W, GRASS, ROCK_W, ROCK],
+    TILE_WATER: [WATER, WATER, WATER, WATER],
+}
+
+# Dictionary of all tile types and their weights.
+tile_weight = {
+    TILE_COAST_E: 5,
+    TILE_COAST_N: 5,
+    TILE_COAST_NE: 5,
+    TILE_COAST_NE_2: 2,
+    TILE_COAST_NW: 5,
+    TILE_COAST_NW_2: 2,
+    TILE_COAST_S: 5,
+    TILE_COAST_SE: 5,
+    TILE_COAST_SE_2: 2,
+    TILE_COAST_SW: 5,
+    TILE_COAST_SW_2: 2,
+    TILE_COAST_W: 5,
+    TILE_FOREST: 5,
+    TILE_FOREST_E: 4,
+    TILE_FOREST_N: 4,
+    TILE_FOREST_NE: 4,
+    TILE_FOREST_NE_2: 2,
+    TILE_FOREST_NW: 4,
+    TILE_FOREST_NW_2: 2,
+    TILE_FOREST_S: 4,
+    TILE_FOREST_SE: 4,
+    TILE_FOREST_SE_2: 2,
+    TILE_FOREST_SW: 4,
+    TILE_FOREST_SW_2: 2,
+    TILE_FOREST_W: 4,
+    TILE_GRASS: 16,
+    TILE_ROCK_E: 4,
+    TILE_ROCK_N: 4,
+    TILE_ROCK_NE: 4,
+    TILE_ROCK_NW: 4,
+    TILE_ROCK_S: 4,
+    TILE_ROCK_SE: 4,
+    TILE_ROCK_SW: 4,
+    TILE_ROCK_W: 4,
+    TILE_WATER: 4,
+}
