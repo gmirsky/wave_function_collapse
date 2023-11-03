@@ -10,11 +10,14 @@ case has a unique ID for easy identification.
 """
 import pytest
 from class_tile import Tile
-from constants import tile_rules, tile_weight, NORTH, EAST, SOUTH, WEST
+from constants import tile_rules, NORTH, EAST, SOUTH, WEST
 
 
 # Test the constructor
 def test_constructor():
+    """
+    Test the constructor for the Tile class.
+    """
     # Arrange
     x, y = 0, 0
 
@@ -24,11 +27,14 @@ def test_constructor():
     # Assert
     assert tile.possibilities == list(tile_rules.keys())
     assert tile.entropy == len(tile.possibilities)
-    assert tile.neighbours == {}
+    assert not tile.neighbours
 
 
 # Test add_adjacent_tile method
 def test_add_adjacent_tile():
+    """
+    Test the add_adjacent_tile method for the Tile class.
+    """
     # Arrange
     tile1 = Tile(0, 0)
     tile2 = Tile(1, 0)
@@ -42,6 +48,9 @@ def test_add_adjacent_tile():
 
 # Test get_possible_directions method
 def test_get_possible_directions():
+    """
+    Test the get_possible_directions method for the Tile class.
+    """
     # Arrange
     tile = Tile(0, 0)
     tile.add_adjacent_tile(NORTH, Tile(0, 1))
@@ -55,6 +64,9 @@ def test_get_possible_directions():
 
 # Test get_possible_tiles_to_place_adjacently method
 def test_get_possible_tiles_to_place_adjacently():
+    """
+    Test the get_possible_tiles_to_place_adjacently method for the Tile class.
+    """
     # Arrange
     tile = Tile(0, 0)
 
@@ -67,6 +79,9 @@ def test_get_possible_tiles_to_place_adjacently():
 
 # Test collapse method
 def test_collapse():
+    """
+    Test the collapse method for the Tile class.
+    """
     # Arrange
     tile = Tile(0, 0)
 
@@ -91,6 +106,9 @@ def test_collapse():
     ids=["north", "east", "south", "west", "invalid"],
 )
 def test_constrain(direction, expected_reduced):
+    """
+    Test the constrain method for the Tile class.
+    """
     # Arrange
     tile = Tile(0, 0)
     adjacent_possibilities = list(tile_rules.keys())

@@ -29,6 +29,9 @@ from class_stack import Stack
     ],
 )
 def test_stack_size(items, expected_size):
+    """
+    Test the size method of the Stack class.
+    """
     # Arrange
     stack = Stack()
 # sourcery skip: no-loop-in-tests
@@ -51,6 +54,9 @@ def test_stack_size(items, expected_size):
     ],
 )
 def test_stack_is_empty(items, expected_is_empty):
+    """
+    Test the is_empty method of the Stack class.
+    """
     # Arrange
     stack = Stack()
 # sourcery skip: no-loop-in-tests
@@ -72,6 +78,9 @@ def test_stack_is_empty(items, expected_is_empty):
     ],
 )
 def test_stack_pop(items, expected_item):
+    """
+    Test the pop method of the Stack class.
+    """
     # Arrange
     stack = Stack()
 # sourcery skip: no-loop-in-tests
@@ -87,6 +96,10 @@ def test_stack_pop(items, expected_item):
 
 # Edge case tests
 def test_pop_from_empty_stack():
+    """
+    Test the pop method of the Stack class when trying to pop from an
+    empty stack.
+    """
     # Arrange
     stack = Stack()
 

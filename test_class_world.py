@@ -19,9 +19,12 @@ from class_world import World
         ),  # Error case with negative dimensions
     ],
 )
-def test_world_initialization(size_x, size_y, id):
+def test_world_initialization(size_x, size_y, error_case):
+    """
+    Test the initialization of the World class.
+    """
     # Arrange
-    if id == "error_case_negative_dimensions":
+    if error_case == "error_case_negative_dimensions":
         with pytest.raises(ValueError):
             World(size_x, size_y)
     else:
@@ -54,11 +57,15 @@ def test_world_initialization(size_x, size_y, id):
         ),  # Error case with coordinates out of bounds
     ],
 )
-def test_get_entrophy(x, y, id):
+def test_get_entrophy(x, y, error_case):
+    """
+    Test the get_entrophy method of the World class.
+    """
     # Arrange
     world = World(5, 5)
 
-    if id in ["error_case_negative_coordinates", "error_case_out_of_bounds"]:
+    if error_case in ["error_case_negative_coordinates",
+                      "error_case_out_of_bounds"]:
         with pytest.raises(IndexError):
             world.get_entrophy(x, y)
     else:
