@@ -34,7 +34,7 @@ def test_stack_size(items, expected_size):
     """
     # Arrange
     stack = Stack()
-# sourcery skip: no-loop-in-tests
+    # sourcery skip: no-loop-in-tests
     for item in items:
         stack.push(item)
 
@@ -59,7 +59,7 @@ def test_stack_is_empty(items, expected_is_empty):
     """
     # Arrange
     stack = Stack()
-# sourcery skip: no-loop-in-tests
+    # sourcery skip: no-loop-in-tests
     for item in items:
         stack.push(item)
 
@@ -83,7 +83,7 @@ def test_stack_pop(items, expected_item):
     """
     # Arrange
     stack = Stack()
-# sourcery skip: no-loop-in-tests
+    # sourcery skip: no-loop-in-tests
     for item in items:
         stack.push(item)
 

@@ -64,8 +64,7 @@ def test_get_entrophy(x, y, error_case):
     # Arrange
     world = World(5, 5)
 
-    if error_case in ["error_case_negative_coordinates",
-                      "error_case_out_of_bounds"]:
+    if error_case in ["error_case_negative_coordinates", "error_case_out_of_bounds"]:
         with pytest.raises(IndexError):
             world.get_entrophy(x, y)
     else:
