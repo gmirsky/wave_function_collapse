@@ -102,9 +102,7 @@ class World:
         if not tiles_with_the_lowest_entrophy:
             return 0
 
-        tile_to_be_collapsed = random.choice(
-            tiles_with_the_lowest_entrophy
-        )  # nosec b311
+        tile_to_be_collapsed = random.choice(tiles_with_the_lowest_entrophy)  # nosec b311
         tile_to_be_collapsed.collapse()
 
         stack = Stack()

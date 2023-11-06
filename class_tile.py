@@ -53,7 +53,9 @@ class Tile:
         """
         weights = [tile_weight[possibility] for possibility in self.possibilities]
         self.possibilities = random.choices(
-            self.possibilities, weights=weights, k=1  # nosec b311
+            self.possibilities,
+            weights=weights,
+            k=1,  # nosec b311
         )
         self.entropy = 0
 
