@@ -1,0 +1,34 @@
+# FILE: bandit.toml
+[tool.bandit]
+exclude_dirs = [
+    "tests", 
+    ".venv", 
+    ".venv3", 
+    "__pycache__",
+    "build",
+    ".mypy_cache",
+    ".ruff_cache",
+    ".github"
+    ]
+targets = [
+    "wave_function_collapse.py",
+    "constants.py",
+    "class_tile.py",
+    "class_stack.py",
+    "class_world.py",
+    "class_draw_world.py",
+]
+tests = [
+    "B102",
+    "B103",
+    "B104",
+    "B105",
+    "B106",
+    "B107",
+    "B108",
+    "B110",
+    "B201", 
+    "B301",
+    "B324"
+]
+skips = ["B101", "B601"]
