@@ -14,15 +14,45 @@ Overrides for pylint, bandit have been added to the code to allow for the use of
 
 The graphic (sprite) images are from Puny World and are freely usuable.
 
-**TO DO**: Finish up the Pytest test fixtures and comprehensively test the code.
-
-**TL;DR** - Assuming that you have Python installed. To run this demonstration. Do the following.
+**TL;DR** - Assuming that you have Python installed. To run this demonstration, do the following.
 
 ```bash
-pip3 install pygame
+python3 -m pip install -r requirements.txt
 ```
 
 ```bash
 python3 ./wave_function_collapse.py
 ```
 
+## Python support
+
+Continuous integration tests and linting run on Python 3.10, 3.11, and 3.14.
+
+## Run in a container
+
+Build the image:
+
+```bash
+docker build -t wave-function-collapse .
+```
+
+Run the app container:
+
+```bash
+docker run --rm -it wave-function-collapse
+```
+
+> Note: this project uses pygame, so displaying the game window from a container
+> requires display forwarding (for example, X11/Wayland passthrough).
+
+## Run with Docker Compose
+
+Build and run:
+
+```bash
+docker compose up --build
+```
+
+By default, `docker-compose.yml` sets `SDL_VIDEODRIVER=dummy` for headless runs.
+To try GUI display forwarding, set `SDL_VIDEODRIVER` and `DISPLAY` in your shell
+before running compose.
