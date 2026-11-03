@@ -1,0 +1,13 @@
+services:
+  wave-function-collapse:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: wave-function-collapse:local
+    stdin_open: true
+    tty: true
+    environment:
+      - SDL_VIDEODRIVER=${SDL_VIDEODRIVER:-dummy}
+      - DISPLAY=${DISPLAY:-}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw

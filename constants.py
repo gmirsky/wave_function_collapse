@@ -1,35 +1,40 @@
+"""Project-wide constants for world generation and rendering.
+
+This module defines:
+* world/display dimensions,
+* symbolic direction values,
+* tile IDs and connector-edge IDs,
+* sprite-sheet coordinates for each tile,
+* adjacency rules used by the WFC constraint step,
+* weighted frequencies used when collapsing a tile.
 """
-Config contains all the constants used in the Wave Function Collapse
-algorithm demonstrator.
-"""
-# Path to the spritesheet obtained from:
-#   https://merchant-shade.itch.io/16x16-puny-world
+# Spritesheet path from:
+# https://merchant-shade.itch.io/16x16-puny-world
 SPRITE_SHEET_PATH = "./assets/punyworld-overworld-tileset.png"
 
+# Colors used while drawing unresolved entropy values.
 DARK_GREY = "darkgrey"
 GREY = "grey"
 GREEN = "green"
 WHITE = "white"
 
-# Directions
+# Cardinal directions encoded as small integers so they can also index
+# connector arrays in ``tile_rules``.
 NORTH = 0
 EAST = 1
 SOUTH = 2
 WEST = 3
 
-# Path to the spritesheet obtained from:
-#   https://merchant-shade.itch.io/16x16-puny-world
-SPRITE_SHEET_PATH = "./assets/punyworld-overworld-tileset.png"
-
-# worls size in tiles
+# World size in logical tiles (not pixels).
 WORLD_X = 30
 WORLD_Y = 25
 
-# Spritesheet tile size (original), and upscale factor
+# Sprite size in source sheet, and integer upscale factor for display.
 TILE_SIZE = 16
 TILE_SCALE = 2
 
-# Tile Types
+# Tile type IDs map to entries in ``sprite_tiles``, ``tile_rules``,
+# and ``tile_weight``.
 TILE_COAST_E = 4
 TILE_COAST_N = 3
 TILE_COAST_NE = 7
@@ -67,7 +72,7 @@ TILE_ROCK_W = 18
 TILE_WATER = 1
 
 
-# Tile Edges
+# Connector edge IDs used for adjacency compatibility checks.
 COAST_E = 4
 COAST_N = 3
 COAST_S = 5
@@ -85,8 +90,7 @@ ROCK_S = 13
 ROCK_W = 14
 WATER = 1
 
-# Dictionary of all tile types and their sprite coordinates
-# in the spritesheet.
+# Maps tile type -> (x, y) pixel coordinate in the sprite sheet.
 sprite_tiles = {
     TILE_COAST_E: (144, 176),
     TILE_COAST_N: (128, 160),
@@ -125,8 +129,8 @@ sprite_tiles = {
     TILE_WATER: (128, 176),
 }
 
-# Dictionary of all tile types and tile edges that can be used
-# by adjacent tiles to generate the world.
+# Maps tile type -> [north_edge, east_edge, south_edge, west_edge].
+# Two adjacent tiles are compatible when their touching connector IDs match.
 tile_rules = {
     TILE_COAST_E: [COAST_E, GRASS, COAST_E, WATER],
     TILE_COAST_N: [GRASS, COAST_N, WATER, COAST_N],
@@ -165,7 +169,8 @@ tile_rules = {
     TILE_WATER: [WATER, WATER, WATER, WATER],
 }
 
-# Dictionary of all tile types and their weights.
+# Weighted frequency table for ``random.choices`` during collapse.
+# Higher values make a tile type appear more frequently.
 tile_weight = {
     TILE_COAST_E: 5,
     TILE_COAST_N: 5,

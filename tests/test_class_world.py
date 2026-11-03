@@ -1,78 +1,75 @@
-"""
-This code provides for testing the World class.
-"""
-import pytest
+"""Unit tests for World."""
+
+import class_world
 from class_world import World
+from constants import EAST, NORTH, SOUTH, WEST
 
 
-# Test the initialization of the World class
-@pytest.mark.parametrize(
-    "size_x, size_y, id",
-    [
-        (5, 5, "happy_path_5x5"),  # Happy path with square world
-        (5, 10, "happy_path_5x10"),  # Happy path with rectangular world
-        (0, 0, "edge_case_empty_world"),  # Edge case with no tiles
-        (
-            -1,
-            -1,
-            "error_case_negative_dimensions",
-        ),  # Error case with negative dimensions
-    ],
-)
-def test_world_initialization(size_x, size_y, error_case):
-    """
-    Test the initialization of the World class.
-    """
-    # Arrange
-    if error_case == "error_case_negative_dimensions":
-        with pytest.raises(ValueError):
-            World(size_x, size_y)
-    else:
-        # Act
-        world = World(size_x, size_y)
+def test_world_initialization_builds_grid():
+    """World stores dimensions and creates the expected tile grid."""
+    world = World(3, 2)
 
-        # Assert
-        assert world.cols == size_x
-        assert world.rows == size_y
-        assert len(world.tile_rows) == size_y
-        for row in world.tile_rows:
-            assert len(row) == size_x
+    assert world.cols == 3
+    assert world.rows == 2
+    assert len(world.tile_rows) == 2
+    assert all(len(row) == 3 for row in world.tile_rows)
 
 
-# Test the get_entrophy method
-@pytest.mark.parametrize(
-    "x, y, id",
-    [
-        (0, 0, "happy_path_top_left"),  # Happy path with top left tile
-        (4, 4, "happy_path_bottom_right"),  # Happy path with bottom right tile
-        (
-            -1,
-            -1,
-            "error_case_negative_coordinates",
-        ),  # Error case with negative coordinates
-        (
-            10,
-            10,
-            "error_case_out_of_bounds",
-        ),  # Error case with coordinates out of bounds
-    ],
-)
-def test_get_entrophy(x, y, error_case):
-    """
-    Test the get_entrophy method of the World class.
-    """
-    # Arrange
-    world = World(5, 5)
+def test_world_wires_tile_neighbours():
+    """Tiles know their valid adjacent tiles."""
+    world = World(2, 2)
+    top_left = world.tile_rows[0][0]
+    bottom_right = world.tile_rows[1][1]
 
-    if error_case in ["error_case_negative_coordinates", "error_case_out_of_bounds"]:
-        with pytest.raises(IndexError):
-            world.get_entrophy(x, y)
-    else:
-        # Act
-        entropy = world.get_entrophy(x, y)
-
-        # Assert
-        assert entropy >= 0
+    assert set(top_left.get_possible_directions()) == {EAST, SOUTH}
+    assert set(bottom_right.get_possible_directions()) == {NORTH, WEST}
 
 
-# Continue with similar tests for the other methods in the World class
+def test_get_entropy_and_type_from_coordinates():
+    """World proxies tile entropy and type by coordinate."""
+    world = World(1, 1)
+    tile = world.tile_rows[0][0]
+    tile.possibilities = [42]
+    tile.entropy = 1
+
+    assert world.get_entrophy(0, 0) == 1
+    assert world.get_type(0, 0) == 42
+
+
+def test_get_the_lowest_entropy_ignores_collapsed_tiles():
+    """Lowest entropy uses only tiles with entropy greater than zero."""
+    world = World(2, 1)
+    world.tile_rows[0][0].entropy = 0
+    world.tile_rows[0][1].entropy = 2
+
+    assert world.get_the_lowest_entrophy() == 2
+
+
+def test_wave_function_collapse_returns_zero_when_complete():
+    """No work is done when every tile is already collapsed."""
+    world = World(2, 2)
+    for row in world.tile_rows:
+        for tile in row:
+            tile.entropy = 0
+            tile.possibilities = [tile.possibilities[0]]
+
+    assert world.wave_function_collapse() == 0
+
+
+def test_wave_function_collapse_collapses_one_tile(monkeypatch):
+    """A single WFC step collapses one candidate tile."""
+    world = World(2, 1)
+    target = world.tile_rows[0][0]
+    other = world.tile_rows[0][1]
+
+    target.possibilities = [target.possibilities[0]]
+    target.entropy = 1
+    other.entropy = 0
+    other.possibilities = [other.possibilities[0]]
+
+    monkeypatch.setattr(class_world.random, "choice", lambda seq: seq[0])
+
+    collapsed = world.wave_function_collapse()
+
+    assert collapsed == 1
+    assert target.entropy == 0

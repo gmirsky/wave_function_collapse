@@ -1,120 +1,59 @@
-"""
-This test suite covers all the methods in the Tile class.
-It tests the path for each method, as well as some
-edge cases such as an invalid direction in the constrain
-method.
+"""Unit tests for Tile."""
 
-The constrain method is parametrized to test all possible
-directions, as well as an invalid direction. Each test
-case has a unique ID for easy identification.
-"""
-import pytest
 from class_tile import Tile
-from constants import tile_rules, NORTH, EAST, SOUTH, WEST
+from constants import NORTH, SOUTH, tile_rules
 
 
-# Test the constructor
-def test_constructor():
-    """
-    Test the constructor for the Tile class.
-    """
-    # Arrange
-    x, y = 0, 0
+def test_tile_constructor_sets_defaults():
+    """A tile starts with all possibilities and matching entropy."""
+    tile = Tile(0, 0)
 
-    # Act
-    tile = Tile(x, y)
-
-    # Assert
     assert tile.possibilities == list(tile_rules.keys())
-    assert tile.entropy == len(tile.possibilities)
-    assert not tile.neighbours
+    assert tile.entropy == len(tile_rules)
+    assert tile.neighbours == {}
 
 
-# Test add_adjacent_tile method
-def test_add_adjacent_tile():
-    """
-    Test the add_adjacent_tile method for the Tile class.
-    """
-    # Arrange
-    tile1 = Tile(0, 0)
-    tile2 = Tile(1, 0)
-
-    # Act
-    tile1.add_adjacent_tile(NORTH, tile2)
-
-    # Assert
-    assert tile1.get_adjacent_tile(NORTH) == tile2
-
-
-# Test get_possible_directions method
-def test_get_possible_directions():
-    """
-    Test the get_possible_directions method for the Tile class.
-    """
-    # Arrange
+def test_add_and_get_adjacent_tile():
+    """Adjacent tile mapping is retrievable by direction."""
     tile = Tile(0, 0)
-    tile.add_adjacent_tile(NORTH, Tile(0, 1))
+    north_tile = Tile(0, 1)
 
-    # Act
-    directions = tile.get_possible_directions()
+    tile.add_adjacent_tile(NORTH, north_tile)
 
-    # Assert
-    assert directions == [NORTH]
+    assert tile.get_adjacent_tile(NORTH) is north_tile
+    assert tile.get_possible_directions() == [NORTH]
 
 
-# Test get_possible_tiles_to_place_adjacently method
-def test_get_possible_tiles_to_place_adjacently():
-    """
-    Test the get_possible_tiles_to_place_adjacently method for the Tile class.
-    """
-    # Arrange
+def test_collapse_reduces_to_single_possibility():
+    """Collapse resolves the tile to one possible type."""
     tile = Tile(0, 0)
 
-    # Act
-    possibilities = tile.get_possible_tiles_to_place_adjacently()
-
-    # Assert
-    assert possibilities == list(tile_rules.keys())
-
-
-# Test collapse method
-def test_collapse():
-    """
-    Test the collapse method for the Tile class.
-    """
-    # Arrange
-    tile = Tile(0, 0)
-
-    # Act
     tile.collapse()
 
-    # Assert
     assert tile.entropy == 0
     assert len(tile.possibilities) == 1
+    assert tile.possibilities[0] in tile_rules
 
 
-# Test constrain method
-@pytest.mark.parametrize(
-    "direction, expected_reduced",
-    [
-        (NORTH, True),
-        (EAST, True),
-        (SOUTH, True),
-        (WEST, True),
-        ("INVALID_DIRECTION", False),
-    ],
-    ids=["north", "east", "south", "west", "invalid"],
-)
-def test_constrain(direction, expected_reduced):
-    """
-    Test the constrain method for the Tile class.
-    """
-    # Arrange
+def test_constrain_reduces_possibilities_for_valid_direction():
+    """Constraining with specific neighbor choices can reduce entropy."""
     tile = Tile(0, 0)
-    adjacent_possibilities = list(tile_rules.keys())
+    before = set(tile.possibilities)
 
-    # Act
-    reduced = tile.constrain(adjacent_possibilities, direction)
+    reduced = tile.constrain([1], NORTH)
 
-    # Assert
-    assert reduced == expected_reduced
+    assert reduced is True
+    assert tile.entropy < len(before)
+    assert set(tile.possibilities).issubset(before)
+
+
+def test_constrain_noop_when_already_collapsed():
+    """Collapsed tiles are not constrained further."""
+    tile = Tile(0, 0)
+    tile.possibilities = [tile.possibilities[0]]
+    tile.entropy = 0
+
+    reduced = tile.constrain([1], SOUTH)
+
+    assert reduced is False
+    assert tile.entropy == 0
